@@ -13,25 +13,40 @@ import {CatService} from './services/cat.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { TokenInterceptorService } from './services/token-interceptor.service';
 import { ListCatsComponent } from './list-cats/list-cats.component';
+import { DetailsCatComponent } from './details-cat/details-cat.component';
+import { EditComponent } from './edit/edit.component';
+import { ErrorInterceptorService } from './services/error-interceptor.service';
+import { ToastrModule } from 'ngx-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
     CreatepostComponent,
-    ListCatsComponent
+    ListCatsComponent,
+    DetailsCatComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
   providers: [AuthService, CatService, AuthGuardService,
   {
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorInterceptorService,
+    multi: true,
   }
   ],
   bootstrap: [AppComponent]

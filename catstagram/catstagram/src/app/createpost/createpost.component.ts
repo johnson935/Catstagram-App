@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { CatService } from '../services/cat.service';
 @Component({
   selector: 'app-createpost',
@@ -8,7 +9,9 @@ import { CatService } from '../services/cat.service';
 })
 export class CreatepostComponent implements OnInit {
   catForm : FormGroup;
-  constructor(private fb: FormBuilder, private catService: CatService) { 
+  constructor(private fb: FormBuilder, 
+    private catService: CatService,
+    private toastrService: ToastrService) { 
     this.catForm = this.fb.group({
       'ImageUrl': ['',Validators.required],
       'Description': ['']
@@ -23,6 +26,9 @@ export class CreatepostComponent implements OnInit {
   }
 
   create(){
-    
+    this.catService.create(this.catForm.value)
+    .subscribe(res => {
+      this.toastrService.success("Success");
+    })
   }
 }
