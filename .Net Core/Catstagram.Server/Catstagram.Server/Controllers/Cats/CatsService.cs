@@ -59,10 +59,7 @@ namespace Catstagram.Server.Controllers.Cats
                 .FirstOrDefaultAsync();
         public async Task<bool> Update(int id, string desciption, string userId)
         {
-            var cat = await this.context
-                .Cats
-                .Where(c => c.Id == id && c.UserId == userId)
-                .FirstOrDefaultAsync();
+            var cat = await this.GetByIdAndByUserId(id, userId);
 
             if (cat == null)
             {
@@ -71,6 +68,27 @@ namespace Catstagram.Server.Controllers.Cats
 
             cat.Description = desciption;
 
+            await this.context.SaveChangesAsync();
+
+            return true;
+        }
+
+        private async Task<Cat> GetByIdAndByUserId(int id, string userId)
+            => await this.context
+                .Cats
+                .Where(c => c.Id == id && c.UserId == userId)
+                .FirstOrDefaultAsync();
+
+        public async Task<bool> Delete(int id, string userId)
+        {
+            var cat = await this.GetByIdAndByUserId(id, userId);
+
+            if (cat == null)
+            {
+                return false;
+            }
+
+            this.context.Cats.Remove(cat);
             await this.context.SaveChangesAsync();
 
             return true;

@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Catstagram.Server.Controllers.Cats
 {
+    using static Infrastructure.WebConstants;
+    
     [Authorize]
     public class CatsController : ApiController
     {
@@ -26,7 +28,7 @@ namespace Catstagram.Server.Controllers.Cats
         }
 
         [HttpGet]
-        [Route("{id}")]
+        [Route(RouteId)]
         public async Task<ActionResult<CatDetailsServiceModel>> Details(int id)
         =>
             await this.catsService.Details(id);
@@ -47,6 +49,22 @@ namespace Catstagram.Server.Controllers.Cats
             var result = await this.catsService.Update(model.Id, model.Description, userId);
 
             if (!result)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route(RouteId)]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var userId = this.User.GetId();
+
+            var deleted = await this.catsService.Delete(id, userId);
+
+            if (!deleted)
             {
                 return BadRequest();
             }

@@ -7,6 +7,7 @@ namespace Catstagram.Server.Controllers.Cats
 {
     public interface ICatsService
     {
+        public Task<bool> Delete(int id, string userId);
         public Task<bool> Update(int id, string description, string userId);
         public Task<CatDetailsServiceModel> Details(int id);
         public Task<IEnumerable<CatsListingServiceModel>> ByUser(string userId);
