@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Google-drive\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj": {}
+    "D:\\Google-drive\\Catstagram App\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj": {}
   },
   "projects": {
-    "D:\\Google-drive\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj": {
+    "D:\\Google-drive\\Catstagram App\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Google-drive\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj",
+        "projectUniqueName": "D:\\Google-drive\\Catstagram App\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj",
         "projectName": "Catstagram.Server",
-        "projectPath": "D:\\Google-drive\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj",
+        "projectPath": "D:\\Google-drive\\Catstagram App\\.Net Core\\Catstagram.Server\\Catstagram.Server\\Catstagram.Server.csproj",
         "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-        "outputPath": "D:\\Google-drive\\.Net Core\\Catstagram.Server\\Catstagram.Server\\obj\\",
+        "outputPath": "D:\\Google-drive\\Catstagram App\\.Net Core\\Catstagram.Server\\Catstagram.Server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

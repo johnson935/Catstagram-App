@@ -1,5 +1,8 @@
 ﻿using Catstagram.Server.Data;
 using Catstagram.Server.Data.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Catstagram.Server.Controllers.Cats
@@ -28,5 +31,15 @@ namespace Catstagram.Server.Controllers.Cats
 
             return cat.Id;
         }
+
+        public async Task<IEnumerable<CatsListingResponseModel>> ByUser(string userId)
+        => await this.context
+                    .Cats
+                    .Where(c => c.UserId == userId)
+            .Select(c => new CatsListingResponseModel
+            {
+                Id = c.Id,
+                ImageUrl = c.ImageUrl
+            }).ToListAsync();
     }
 }
