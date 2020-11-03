@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Catstagram.Server.Controllers.Identity
+namespace Catstagram.Server.Controllers.Identity.Models
 {
     public class LoginRequestModel
     {

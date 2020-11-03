@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Catstagram.Server.Infrastructure;
+using Catstagram.Server.Infrastructure.Extensions;
+using Catstagram.Server.Infrastructure.Filters;
 
 namespace Catstagram.Server
 {
@@ -27,7 +29,7 @@ namespace Catstagram.Server
                 .AddJwtAuthentication(appSettings)
                 .AddApplicationServices()
                 .AddSwagger()
-                .AddControllers();
+                .AddApiControllers();
             
         }
 

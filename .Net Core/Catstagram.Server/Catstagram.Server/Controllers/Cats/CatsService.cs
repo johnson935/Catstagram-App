@@ -1,7 +1,9 @@
-﻿using Catstagram.Server.Data;
+﻿using Catstagram.Server.Controllers.Cats.Model;
+using Catstagram.Server.Data;
 using Catstagram.Server.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,14 +34,46 @@ namespace Catstagram.Server.Controllers.Cats
             return cat.Id;
         }
 
-        public async Task<IEnumerable<CatsListingResponseModel>> ByUser(string userId)
+        public async Task<IEnumerable<CatsListingServiceModel>> ByUser(string userId)
         => await this.context
                     .Cats
                     .Where(c => c.UserId == userId)
-            .Select(c => new CatsListingResponseModel
+            .Select(c => new CatsListingServiceModel
             {
                 Id = c.Id,
                 ImageUrl = c.ImageUrl
             }).ToListAsync();
+
+        public async Task<CatDetailsServiceModel> Details(int id)
+            => await this.context
+                .Cats
+                .Where(c => c.Id == id)
+                .Select(c => new CatDetailsServiceModel
+                {
+                    Id = c.Id,
+                    UserId = c.UserId,
+                    ImageUrl = c.ImageUrl,
+                    Description = c.Description,
+                    username = c.User.UserName
+                })
+                .FirstOrDefaultAsync();
+        public async Task<bool> Update(int id, string desciption, string userId)
+        {
+            var cat = await this.context
+                .Cats
+                .Where(c => c.Id == id && c.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (cat == null)
+            {
+                return false;
+            }
+
+            cat.Description = desciption;
+
+            await this.context.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

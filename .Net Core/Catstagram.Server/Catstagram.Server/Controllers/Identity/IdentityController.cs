@@ -1,4 +1,5 @@
-﻿using Catstagram.Server.Data.Models;
+﻿using Catstagram.Server.Controllers.Identity.Models;
+using Catstagram.Server.Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

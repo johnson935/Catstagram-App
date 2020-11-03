@@ -11,8 +11,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using Catstagram.Server.Infrastructure.Filters;
 
-namespace Catstagram.Server.Infrastructure
+namespace Catstagram.Server.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -78,5 +79,9 @@ namespace Catstagram.Server.Infrastructure
 
             return services;
         }
+
+        //Validates all models in the controllers
+        public static void AddApiControllers(this IServiceCollection services)
+            => services.AddControllers(options => options.Filters.Add<ModelOrNotFoundActionFilter>());
     }
 }

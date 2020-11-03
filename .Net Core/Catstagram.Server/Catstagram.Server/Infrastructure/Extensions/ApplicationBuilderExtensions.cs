@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Catstagram.Server.Infrastructure
+namespace Catstagram.Server.Infrastructure.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
@@ -12,7 +12,7 @@ namespace Catstagram.Server.Infrastructure
             return app.UseSwagger()
                     .UseSwaggerUI(c =>
                     {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Catstagram API");
+                        c.SwaggerEndpoint("swagger/v1/swagger.json", "My Catstagram API");
                         c.RoutePrefix = string.Empty;
 
                     });
