@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Catstagram.Server.Controllers.Profiles
 {
+    [Authorize]
     public class ProfilesController: ApiController
     {
         private readonly IProfileService profiles;
@@ -19,12 +20,10 @@ namespace Catstagram.Server.Controllers.Profiles
             this.currentUser = currentUser;
         }
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<ProfileServiceModel>> Mine()
         => await this.profiles.ByUser(this.currentUser.GetId());
     
         [HttpPut]
-        [Authorize]
         public async Task<ActionResult> Update(UpdateProfileRequestModel model)
         {
             var userId = this.currentUser.GetId();
