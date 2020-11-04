@@ -22,7 +22,7 @@ namespace Catstagram.Server.Data
         }
 
         public DbSet<Cat> Cats { get; set; }
-
+        public DbSet<Profile> Profiles { get; set; }
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
             this.ApplyAuditInformation();
@@ -47,7 +47,10 @@ namespace Catstagram.Server.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<User>()
-                .OwnsOne(u => u.Profile);
+                .HasOne(u => u.Profile)
+                .WithOne()
+                .HasForeignKey<Profile>(p => p.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
             base.OnModelCreating(builder);
         }
 

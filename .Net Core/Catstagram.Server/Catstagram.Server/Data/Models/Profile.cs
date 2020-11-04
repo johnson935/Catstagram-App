@@ -4,7 +4,11 @@ namespace Catstagram.Server.Data.Models
 {
     using static Validation.User;
     public class Profile
-    {
+    { 
+        [Key]
+        [Required]
+        public string UserId { get; set; }
+
         [MaxLength(MaxNameLength)]
         public string Name { get; set; }
 

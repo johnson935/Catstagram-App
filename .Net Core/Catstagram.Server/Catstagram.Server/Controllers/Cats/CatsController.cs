@@ -52,9 +52,9 @@ namespace Catstagram.Server.Controllers.Cats
 
             var result = await this.catsService.Update(model.Id, model.Description, userId);
 
-            if (!result)
+            if (result.Failure)
             {
-                return BadRequest();
+                return BadRequest(result.Error);
             }
 
             return Ok();
@@ -68,9 +68,9 @@ namespace Catstagram.Server.Controllers.Cats
 
             var deleted = await this.catsService.Delete(id, userId);
 
-            if (!deleted)
+            if (deleted.Failure)
             {
-                return BadRequest();
+                return BadRequest(deleted.Error);
             }
 
             return Ok();

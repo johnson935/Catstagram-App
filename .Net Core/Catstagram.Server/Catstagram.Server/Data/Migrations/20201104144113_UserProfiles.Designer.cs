@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catstagram.Server.Data.Migrations
 {
     [DbContext(typeof(CatstagramDbContext))]
-    [Migration("20201104103427_Profile")]
-    partial class Profile
+    [Migration("20201104144113_UserProfiles")]
+    partial class UserProfiles
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,36 @@ namespace Catstagram.Server.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Cats");
+                });
+
+            modelBuilder.Entity("Catstagram.Server.Data.Models.Profile", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Biography")
+                        .HasColumnType("nvarchar(150)")
+                        .HasMaxLength(150);
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPrivate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(40)")
+                        .HasMaxLength(40);
+
+                    b.Property<string>("ProfilePhotoUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebSite")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Profiles");
                 });
 
             modelBuilder.Entity("Catstagram.Server.Data.Models.User", b =>
@@ -286,40 +316,13 @@ namespace Catstagram.Server.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Catstagram.Server.Data.Models.User", b =>
+            modelBuilder.Entity("Catstagram.Server.Data.Models.Profile", b =>
                 {
-                    b.OwnsOne("Catstagram.Server.Data.Models.Profile", "Profile", b1 =>
-                        {
-                            b1.Property<string>("UserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<string>("Biography")
-                                .HasColumnType("nvarchar(150)")
-                                .HasMaxLength(150);
-
-                            b1.Property<int>("Gender")
-                                .HasColumnType("int");
-
-                            b1.Property<bool>("IsPrivate")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Name")
-                                .HasColumnType("nvarchar(40)")
-                                .HasMaxLength(40);
-
-                            b1.Property<string>("ProfilePhotoUrl")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("WebSite")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("AspNetUsers");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
+                    b.HasOne("Catstagram.Server.Data.Models.User", null)
+                        .WithOne("Profile")
+                        .HasForeignKey("Catstagram.Server.Data.Models.Profile", "UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

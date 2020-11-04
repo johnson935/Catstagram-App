@@ -35,12 +35,12 @@ namespace Catstagram.Server.Controllers.Identity
             };
             var result = await this.userManager.CreateAsync(user, model.Password);
 
-            if (result.Succeeded)
+            if (!result.Succeeded)
             {
-                return Ok();
+                return this.BadRequest(result.Errors);
             }
 
-            return this.BadRequest(result.Errors);
+            return Ok();
         }
 
         [HttpPost]
