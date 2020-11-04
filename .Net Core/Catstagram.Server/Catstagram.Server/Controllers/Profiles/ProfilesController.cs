@@ -1,4 +1,5 @@
-﻿using Catstagram.Server.Controllers.Identity.Models;
+﻿using Catstagram.Server.Controllers.Follows;
+using Catstagram.Server.Controllers.Identity.Models;
 using Catstagram.Server.Controllers.Profiles.Models;
 using Catstagram.Server.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -7,22 +8,38 @@ using System.Threading.Tasks;
 
 namespace Catstagram.Server.Controllers.Profiles
 {
+    using static Infrastructure.WebConstants;
     [Authorize]
     public class ProfilesController: ApiController
     {
         private readonly IProfileService profiles;
         private readonly ICurrentUserService currentUser;
-
+        private readonly IFollowService follows;
         public ProfilesController(IProfileService profiles,
-            ICurrentUserService currentUser)
+            ICurrentUserService currentUser,
+            IFollowService follows)
         {
             this.profiles = profiles;
             this.currentUser = currentUser;
+            this.follows = follows;
         }
         [HttpGet]
-        public async Task<ActionResult<ProfileServiceModel>> Mine()
-        => await this.profiles.ByUser(this.currentUser.GetId());
-    
+        public async Task<ProfileServiceModel> Mine()
+        => await this.profiles.ByUser(this.currentUser.GetId(), allInformation: true);
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route(RouteId)]
+        public async Task<ProfileServiceModel> Details(string id)
+        {
+            var includeAllInformation = await this.follows.IsFollower(id, this.currentUser.GetId());
+
+            if (!includeAllInformation)
+            {
+               includeAllInformation = !await this.profiles.IsPrivate(id);
+            }
+            return await this.profiles.ByUser(id, includeAllInformation);
+        }
         [HttpPut]
         public async Task<ActionResult> Update(UpdateProfileRequestModel model)
         {

@@ -20,21 +20,28 @@ namespace Catstagram.Server.Controllers.Profiles
         {
             this.context = context;
         }
-        public async Task<ProfileServiceModel> ByUser(string userId)
-        => await this.context
+        public async Task<ProfileServiceModel> ByUser(string userId, bool allInformation = false)
+        =>  await this.context
             .Users
             .Where(u => u.Id == userId)
-            .Select(u => new ProfileServiceModel
-            {
-                Name = u.Profile.Name,
-                Biography = u.Profile.Biography,
-                Gender = u.Profile.Gender.ToString(),
-                ProfilePhotoUrl = u.Profile.ProfilePhotoUrl,
-                WebSite = u.Profile.WebSite,
-                IsPrivate = u.Profile.IsPrivate
-            })
+            .Select(u =>  allInformation
+                ? new PublicProfileServiceModel
+                {
+                    Name = u.Profile.Name,
+                    Biography = u.Profile.Biography,
+                    Gender = u.Profile.Gender.ToString(),
+                    ProfilePhotoUrl = u.Profile.ProfilePhotoUrl,
+                    WebSite = u.Profile.WebSite,
+                    IsPrivate = u.Profile.IsPrivate
+                }
+                : new ProfileServiceModel
+                {
+                    Name = u.Profile.Name,
+                    ProfilePhotoUrl = u.Profile.ProfilePhotoUrl,
+                    IsPrivate = u.Profile.IsPrivate
+                })
             .FirstOrDefaultAsync();
-
+        
         public async Task<Result> Update(
             string userId, 
             string email, 
@@ -163,5 +170,11 @@ namespace Catstagram.Server.Controllers.Profiles
                 profile.IsPrivate = isPrivate;
             }
         }
+
+        public async Task<bool> IsPrivate(string userId)
+        => await this.context.Profiles
+            .Where(p => p.UserId == userId)
+            .Select(p => p.IsPrivate)
+            .FirstOrDefaultAsync();
     }
 }

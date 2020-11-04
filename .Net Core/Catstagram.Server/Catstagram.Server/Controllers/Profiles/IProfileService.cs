@@ -10,7 +10,7 @@ namespace Catstagram.Server.Controllers.Profiles
 {
     public interface IProfileService
     {
-        Task<ProfileServiceModel> ByUser(string userId);
+        Task<ProfileServiceModel> ByUser(string userId, bool allInformation = false);
 
         Task<Result> Update(
             string userId,
@@ -22,5 +22,7 @@ namespace Catstagram.Server.Controllers.Profiles
             string biography,
             Gender gender,
             bool isPrivate);
+
+        Task<bool> IsPrivate(string userId);
     }
 }
