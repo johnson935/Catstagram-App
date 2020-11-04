@@ -13,6 +13,7 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Catstagram.Server.Infrastructure.Filters;
 using Catstagram.Server.Infrastructure.Services;
+using Catstagram.Server.Controllers.Profiles;
 
 namespace Catstagram.Server.Infrastructure.Extensions
 {
@@ -70,7 +71,8 @@ namespace Catstagram.Server.Infrastructure.Extensions
            => services
                 .AddTransient<IIdentityService, IdentityService>()
                 .AddScoped<ICurrentUserService, CurrentUserService>()
-                .AddTransient<ICatsService, CatsService>();
+                .AddTransient<ICatsService, CatsService>()
+                .AddTransient<IProfileService, ProfileService>();
         
         public static IServiceCollection AddSwagger(this IServiceCollection services)
         {
