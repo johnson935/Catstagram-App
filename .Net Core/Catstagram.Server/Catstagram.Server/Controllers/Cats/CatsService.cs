@@ -38,6 +38,7 @@ namespace Catstagram.Server.Controllers.Cats
         => await this.context
                     .Cats
                     .Where(c => c.UserId == userId)
+            .OrderByDescending(c => c.CreatedOn)
             .Select(c => new CatsListingServiceModel
             {
                 Id = c.Id,

@@ -1,6 +1,7 @@
 ﻿using Catstagram.Server.Controllers.Cats.Model;
 using Catstagram.Server.Controllers.Cats.Models;
 using Catstagram.Server.Infrastructure;
+using Catstagram.Server.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -14,16 +15,19 @@ namespace Catstagram.Server.Controllers.Cats
     public class CatsController : ApiController
     {
         private readonly ICatsService catsService;
-
-        public CatsController(ICatsService catsService)
+        private readonly ICurrentUserService currentUser;
+        public CatsController(
+            ICatsService catsService,
+            ICurrentUserService currentUser)
         {
             this.catsService = catsService;
+            this.currentUser = currentUser;
         }
   
         [HttpGet]
         public async Task<IEnumerable<CatsListingServiceModel>> Mine()
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUser.GetId();
             return await this.catsService.ByUser(userId);
         }
 
@@ -36,7 +40,7 @@ namespace Catstagram.Server.Controllers.Cats
         [HttpPost]
         public async Task<ActionResult<int>> Create(CreateCatRequestModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUser.GetId();
             var id = await this.catsService.Create(model.ImageUrl, model.Description, userId);
             return Created(nameof(this.Create), id);
         }
@@ -44,7 +48,7 @@ namespace Catstagram.Server.Controllers.Cats
         [HttpPut]
         public async Task<ActionResult> Update(UpdateCatRequestModel model)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUser.GetId();
 
             var result = await this.catsService.Update(model.Id, model.Description, userId);
 
@@ -60,7 +64,7 @@ namespace Catstagram.Server.Controllers.Cats
         [Route(RouteId)]
         public async Task<ActionResult> Delete(int id)
         {
-            var userId = this.User.GetId();
+            var userId = this.currentUser.GetId();
 
             var deleted = await this.catsService.Delete(id, userId);
 
